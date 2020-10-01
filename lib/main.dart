@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Sudoku',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page!!!'),
+      home: MyHomePage(title: 'Sudoku'),
     );
   }
 }
@@ -50,18 +50,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final List<DropdownMenuItem> difficultyItems = <DropdownMenuItem>[
+    DropdownMenuItem(
+      child: Text("Easy"),
+      value: 1,
+    ),
+    DropdownMenuItem(
+      child: Text("Normal"),
+      value: 2,
+    ),
+    DropdownMenuItem(child: Text("Hard"), value: 3),
+  ];
+  int selectedDifficultyItem = 1;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  // Here goes the Methods
 
   @override
   Widget build(BuildContext context) {
@@ -72,46 +74,148 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Column(
+          children: [
+            Align(
+              alignment: FractionalOffset.topCenter,
+              heightFactor: 1,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('New Game',
+                          style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('Hint', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+/*                  Schwierigkeitsgrad kann ausgewählt werden, wenn auf "New Game geklickt wird."
+                    Expanded(
+                    child: DropdownButton(
+                        items: difficultyItems,
+                        value: selectedDifficultyItem,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedDifficultyItem = value;
+                          });
+                        }),
+                  ),*/
+                ],
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Expanded(
+              child: Container(color: Colors.grey),
+            ),
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('1', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('2', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('3', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('4', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('5', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('6', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('7', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('8', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                  Expanded(
+                    child: RaisedButton(
+                      onPressed: () {},
+                      child: const Text('9', style: TextStyle(fontSize: 20)),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      elevation: 5,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        ));
   }
 }
