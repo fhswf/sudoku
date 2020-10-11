@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sudoku/widgets/sudoku.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -26,29 +27,33 @@ class _HomePageState extends State<HomePage> {
   ];
   int selectedDifficultyItem = 1;
 
+  List<List<dynamic>> twoDList =
+      List.generate(9, (i) => List(9), growable: false);
+
   // Here goes the Methods
   List<Widget> createNumberButtons() {
-    List<Widget> buttons = new List<Widget>();
+    List<Widget> buttons = List<Widget>();
 
-    for (int i = 1; i <= 9; i++) {
+    for (int i = 1; i <= 3; i++) {
       buttons.add(Expanded(
         child: RaisedButton(
           onPressed: () {},
           child: Text(i.toString(), style: TextStyle(fontSize: 20)),
-          color: Colors.blue,
+          color: Colors.blueGrey,
           textColor: Colors.white,
           elevation: 5,
         ),
       ));
     }
 
+    // Lieber löschen durch gedrückthalten
     buttons.add(Expanded(
       child: RaisedButton(
         onPressed: () {},
         child: Center(
           child: Icon(Icons.delete, size: 20),
         ),
-        color: Colors.blue,
+        color: Colors.blueGrey,
         textColor: Colors.white,
         elevation: 5,
       ),
@@ -66,12 +71,19 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/background.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
-        body: Column(
+        child: Column(
           children: [
             Align(
               alignment: FractionalOffset.topCenter,
@@ -85,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {},
                       child: const Text('New Game',
                           style: TextStyle(fontSize: 20)),
-                      color: Colors.blue,
+                      color: Colors.blueGrey,
                       textColor: Colors.white,
                       elevation: 5,
                     ),
@@ -94,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                     child: RaisedButton(
                       onPressed: () {},
                       child: const Text('Hint', style: TextStyle(fontSize: 20)),
-                      color: Colors.blue,
+                      color: Colors.blueGrey,
                       textColor: Colors.white,
                       elevation: 5,
                     ),
@@ -114,7 +126,25 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Expanded(
-              child: Container(color: Colors.grey),
+              child: Sudoku(twoDList: this.twoDList),
+            ),
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: createNumberButtons(),
+              ),
+            ),
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: createNumberButtons(),
+              ),
             ),
             Align(
               alignment: FractionalOffset.bottomCenter,
@@ -126,6 +156,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
