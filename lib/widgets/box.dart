@@ -13,14 +13,20 @@ class Box extends StatefulWidget {
   // Speichern, ob der Wert beim Start des Spiels bereits gefüllt ist.
   bool isInitalValue;
 
+  bool isSelected;
+
   Tuple2<int, int> position;
 
-  Box(int solutionValue, Tuple2<int, int> position,
-      {int value = 0, bool isInitalValue = false}) {
+  Function callback;
+
+  Box(int solutionValue, Tuple2<int, int> position, Function callback,
+      {int value = 0, bool isInitalValue = false, bool isSelected = false}) {
     this.solutionValue = solutionValue;
     this.value = value;
     this.isInitalValue = isInitalValue;
     this.position = position;
+    this.callback = callback;
+    this.isSelected = isSelected;
   }
 
   // Gibt zurück, ob der aktuelle Wert richtig ist.
@@ -33,51 +39,50 @@ class Box extends StatefulWidget {
     return this.value.toString();
   }
 
+//  MaterialColor getBorderColor() {
+//    if (isInitalValue) return Colors.red;
+//   if (isSelected) return Colors.blue;
+//  }
+
   @override
   _BoxState createState() => _BoxState();
 }
 
 class _BoxState extends State<Box> {
-  void updateValue(int value) {
-    // Frage, muss ich das immer in einem setState aufrufen, damit der Wert sich in der UI aktualisiert?
-    // Mal ausprobieren
-    setState(() => widget.value = value);
-  }
-
   @override
   Widget build(BuildContext context) {
-    int counter = 0;
     return Expanded(
       child: InkWell(
         onTap: () {
-          // Evtl. muss ich das in einer Klasse vorher machen. Dort wo ich speichere, welche Box gerade selektiert ist.
-          counter++;
-          print("Tapped a Container" + counter.toString());
+          widget.callback(widget.position);
+        },
+        onLongPress: () {
+          if (!widget.isInitalValue) {/* Wert löschen */}
         },
         child: Container(
           decoration: BoxDecoration(
-            color: widget.correctAnswer() ? Colors.green : Colors.red,
+            color: widget.correctAnswer() ? Colors.green : null,
             border: Border(
               top: BorderSide(
                 //                    <--- top side
-                color: Colors.black,
+                color: widget.isSelected ? Colors.blue : Colors.black,
                 width: widget.position.item1 % 3 != 0
                     ? 1.0
                     : widget.position.item1 == 0 ? 4.0 : 3.0,
               ),
               right: BorderSide(
                 //                   <--- left side
-                color: Colors.black,
+                color: widget.isSelected ? Colors.blue : Colors.black,
                 width: widget.position.item2 == 8 ? 4.0 : 0.0,
               ),
               bottom: BorderSide(
                 //                    <--- top side
-                color: Colors.black,
+                color: widget.isSelected ? Colors.blue : Colors.black,
                 width: widget.position.item1 == 8 ? 4.0 : 0.0,
               ),
               left: BorderSide(
                 //                   <--- left side
-                color: Colors.black,
+                color: widget.isSelected ? Colors.blue : Colors.black,
                 width: widget.position.item2 % 3 != 0
                     ? 1.0
                     : widget.position.item2 == 0 ? 4.0 : 3.0,

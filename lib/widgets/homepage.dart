@@ -1,7 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku/widgets/sudoku.dart';
+import 'package:tuple/tuple.dart';
 
 class HomePage extends StatefulWidget {
+  final String title;
+
+  Tuple2<int, int> selectedBox = Tuple2(-1, -1);
+
+  List<List<dynamic>> twoDList = [
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  ];
+  List<List<dynamic>> acutalValues = [
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+  ];
+
   HomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -12,8 +40,6 @@ class HomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -27,17 +53,26 @@ class _HomePageState extends State<HomePage> {
   ];
   int selectedDifficultyItem = 1;
 
-  List<List<dynamic>> twoDList =
-      List.generate(9, (i) => List(9), growable: false);
+  void setNumber(int value) {
+    setState(() => widget.acutalValues[widget.selectedBox.item1]
+        [widget.selectedBox.item2] = value);
+  }
+
+  void changeSelected(Tuple2 tuple) {
+    setState(() => widget.selectedBox = tuple);
+  }
 
   // Here goes the Methods
+  // Auslagen in ein Statless Widget
   List<Widget> createNumberButtons() {
     List<Widget> buttons = List<Widget>();
 
     for (int i = 1; i <= 3; i++) {
       buttons.add(Expanded(
         child: RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+            setNumber(i);
+          },
           child: Text(i.toString(), style: TextStyle(fontSize: 20)),
           color: Colors.blueGrey,
           textColor: Colors.white,
@@ -45,19 +80,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ));
     }
-
-    // Lieber löschen durch gedrückthalten
-    buttons.add(Expanded(
-      child: RaisedButton(
-        onPressed: () {},
-        child: Center(
-          child: Icon(Icons.delete, size: 20),
-        ),
-        color: Colors.blueGrey,
-        textColor: Colors.white,
-        elevation: 5,
-      ),
-    ));
 
     return buttons;
   }
@@ -126,7 +148,11 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Expanded(
-              child: Sudoku(twoDList: this.twoDList),
+              child: Sudoku(
+                  twoDList: widget.twoDList,
+                  acutalValues: widget.acutalValues,
+                  callback: this.changeSelected,
+                  selectedBox: widget.selectedBox),
             ),
             Align(
               alignment: FractionalOffset.bottomCenter,
