@@ -51,38 +51,50 @@ class Box extends StatefulWidget {
 class _BoxState extends State<Box> {
   @override
   Widget build(BuildContext context) {
+    double marginLeft = 0;
+    double marginTop = 0;
+    double marginRight = 0;
+    double marginBottom = 0;
+
     return Expanded(
       child: InkWell(
         onTap: () {
-          widget.callback(widget.position);
+          if (!widget.isInitalValue) widget.callback(widget.position);
         },
         onLongPress: () {
           if (!widget.isInitalValue) {/* Wert löschen */}
         },
         child: Container(
+          margin: EdgeInsets.only(
+              left: marginLeft,
+              top: marginTop,
+              right: marginRight,
+              bottom: marginBottom),
           decoration: BoxDecoration(
-            color: widget.correctAnswer() ? Colors.green : null,
+            color: widget.isSelected
+                ? Colors.blue
+                : widget.correctAnswer() ? Colors.green : null,
             border: Border(
               top: BorderSide(
                 //                    <--- top side
-                color: widget.isSelected ? Colors.blue : Colors.black,
+                color: Colors.purple,
                 width: widget.position.item1 % 3 != 0
                     ? 1.0
                     : widget.position.item1 == 0 ? 4.0 : 3.0,
               ),
               right: BorderSide(
                 //                   <--- left side
-                color: widget.isSelected ? Colors.blue : Colors.black,
+                color: Colors.purple,
                 width: widget.position.item2 == 8 ? 4.0 : 0.0,
               ),
               bottom: BorderSide(
                 //                    <--- top side
-                color: widget.isSelected ? Colors.blue : Colors.black,
+                color: Colors.purple,
                 width: widget.position.item1 == 8 ? 4.0 : 0.0,
               ),
               left: BorderSide(
                 //                   <--- left side
-                color: widget.isSelected ? Colors.blue : Colors.black,
+                color: Colors.purple,
                 width: widget.position.item2 % 3 != 0
                     ? 1.0
                     : widget.position.item2 == 0 ? 4.0 : 3.0,

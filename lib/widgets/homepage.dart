@@ -62,26 +62,44 @@ class _HomePageState extends State<HomePage> {
     setState(() => widget.selectedBox = tuple);
   }
 
-  // Here goes the Methods
   // Auslagen in ein Statless Widget
   List<Widget> createNumberButtons() {
     List<Widget> buttons = List<Widget>();
+    List<Widget> aligns = List<Widget>();
 
-    for (int i = 1; i <= 3; i++) {
-      buttons.add(Expanded(
-        child: RaisedButton(
-          onPressed: () {
-            setNumber(i);
-          },
-          child: Text(i.toString(), style: TextStyle(fontSize: 20)),
-          color: Colors.blueGrey,
-          textColor: Colors.white,
-          elevation: 5,
+    for (int i = 1; i <= 9; i++) {
+      buttons.add(
+        Expanded(
+          child: RaisedButton(
+            onPressed: () {
+              setNumber(i);
+            },
+            child: Text((i).toString(), style: TextStyle(fontSize: 20)),
+            color: Colors.orange,
+            textColor: Colors.black,
+            elevation: 5,
+          ),
         ),
-      ));
+      );
+
+      if (i % 3 == 0) {
+        aligns.add(
+          Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: buttons,
+            ),
+          ),
+        );
+
+        buttons = List<Widget>();
+      }
     }
 
-    return buttons;
+    return aligns;
   }
 
   @override
@@ -93,20 +111,20 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/background.jpg"),
-            fit: BoxFit.cover,
-          ),
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
         ),
-        child: Column(
-          children: [
+        body: Container(
+          decoration: BoxDecoration(
+            color: Colors.black,
+            //image: DecorationImage(
+            //image: AssetImage("images/background.jpg"),
+            // fit: BoxFit.cover,
+            // ),
+          ),
+          child: Column(children: [
             Align(
               alignment: FractionalOffset.topCenter,
               heightFactor: 1,
@@ -119,8 +137,8 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {},
                       child: const Text('New Game',
                           style: TextStyle(fontSize: 20)),
-                      color: Colors.blueGrey,
-                      textColor: Colors.white,
+                      color: Colors.orange,
+                      textColor: Colors.black,
                       elevation: 5,
                     ),
                   ),
@@ -128,8 +146,8 @@ class _HomePageState extends State<HomePage> {
                     child: RaisedButton(
                       onPressed: () {},
                       child: const Text('Hint', style: TextStyle(fontSize: 20)),
-                      color: Colors.blueGrey,
-                      textColor: Colors.white,
+                      color: Colors.orange,
+                      textColor: Colors.black,
                       elevation: 5,
                     ),
                   ),
@@ -154,36 +172,10 @@ class _HomePageState extends State<HomePage> {
                   callback: this.changeSelected,
                   selectedBox: widget.selectedBox),
             ),
-            Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: createNumberButtons(),
-              ),
-            ),
-            Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: createNumberButtons(),
-              ),
-            ),
-            Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: createNumberButtons(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+            Column(
+              children: createNumberButtons(),
+            )
+          ]),
+        ));
   }
 }
