@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku/widgets/sudoku.dart';
 import 'package:tuple/tuple.dart';
+import 'menubuttons.dart';
+import 'numberbuttons.dart';
+import '../services/sudoku_service.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -44,12 +47,13 @@ class HomePage extends StatefulWidget {
   ];
 
   void initGame() {
+    SudokuService service = SudokuService(1);
     // Erstellt keine Tiefe Kopie
     // acutalValues = new List<List<dynamic>>.from(initialValues);
   }
 
   HomePage({Key key, this.title}) : super(key: key) {
-    initGame();
+    // initGame();
   }
 
   @override
@@ -73,44 +77,11 @@ class _HomePageState extends State<HomePage> {
     setState(() => widget.selectedBox = tuple);
   }
 
-  // Auslagen in ein Statless Widget
-  List<Widget> createNumberButtons() {
-    List<Widget> buttons = List<Widget>();
-    List<Widget> aligns = List<Widget>();
-
-    for (int i = 1; i <= 9; i++) {
-      buttons.add(
-        Expanded(
-          child: RaisedButton(
-            onPressed: () {
-              setNumber(i);
-            },
-            child: Text((i).toString(), style: TextStyle(fontSize: 20)),
-            color: Colors.orange,
-            textColor: Colors.black,
-            elevation: 5,
-          ),
-        ),
-      );
-
-      if (i % 3 == 0) {
-        aligns.add(
-          Align(
-            alignment: FractionalOffset.bottomCenter,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: buttons,
-            ),
-          ),
-        );
-
-        buttons = List<Widget>();
-      }
-    }
-
-    return aligns;
+  void delete(Tuple2 tuple) {
+    setState(() {
+      widget.acutalValues[tuple.item1][tuple.item2] = 0;
+      widget.selectedBox = tuple;
+    });
   }
 
   @override
@@ -128,46 +99,19 @@ class _HomePageState extends State<HomePage> {
             // ),
           ),
           child: Column(children: [
-            Align(
-              alignment: FractionalOffset.topCenter,
-              heightFactor: 1,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                    child: RaisedButton(
-                      onPressed: () {},
-                      child: const Text('New Game',
-                          style: TextStyle(fontSize: 20)),
-                      color: Colors.orange,
-                      textColor: Colors.black,
-                      elevation: 5,
-                    ),
-                  ),
-                  Expanded(
-                    child: RaisedButton(
-                      onPressed: () {},
-                      child: const Text('Hint', style: TextStyle(fontSize: 20)),
-                      color: Colors.orange,
-                      textColor: Colors.black,
-                      elevation: 5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            MenuButtons(),
             Expanded(
               child: Sudoku(
                   resolution: widget.resolution,
                   acutalValues: widget.acutalValues,
                   initialValues: widget.initialValues,
                   callback: this.changeSelected,
+                  delete: this.delete,
                   selectedBox: widget.selectedBox),
             ),
-            Column(
-              children: createNumberButtons(),
-            )
+            NumberButtons(
+              this.setNumber,
+            ),
           ]),
         ));
   }

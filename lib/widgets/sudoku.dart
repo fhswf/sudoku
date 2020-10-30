@@ -7,6 +7,7 @@ class Sudoku extends StatefulWidget {
   List<List<dynamic>> acutalValues;
   List<List<dynamic>> initialValues;
   Function callback;
+  Function delete;
   Tuple2<int, int> selectedBox;
 
   Sudoku(
@@ -15,12 +16,14 @@ class Sudoku extends StatefulWidget {
       this.acutalValues,
       this.initialValues,
       this.callback,
+      this.delete,
       this.selectedBox})
       : super(key: key) {
     this.resolution = resolution;
     this.acutalValues = acutalValues;
     this.initialValues = initialValues;
     this.callback = callback;
+    this.delete = delete;
     this.selectedBox = selectedBox;
   }
 
@@ -42,6 +45,7 @@ class _SudokuState extends State<Sudoku> {
             widget.selectedBox.item1 == i && widget.selectedBox.item2 == j;
 
         var box = Box(widget.resolution[i][j], Tuple2(i, j), widget.callback,
+            widget.delete,
             value: widget.acutalValues[i][j],
             isInitalValue:
                 widget.acutalValues[i][j] == widget.initialValues[i][j] &&

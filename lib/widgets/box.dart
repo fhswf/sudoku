@@ -19,17 +19,20 @@ class Box extends StatefulWidget {
 
   Function callback;
 
+  Function delete;
+
   Box(int solutionValue, Tuple2<int, int> position, Function callback,
+      Function delete,
       {int value = 0, bool isInitalValue = false, bool isSelected = false}) {
     this.solutionValue = solutionValue;
     this.value = value;
     this.isInitalValue = isInitalValue;
     this.position = position;
     this.callback = callback;
+    this.delete = delete;
     this.isSelected = isSelected;
   }
 
-  // Gibt zurück, ob der aktuelle Wert richtig ist.
   bool correctAnswer() {
     return this.value == this.solutionValue;
   }
@@ -38,11 +41,6 @@ class Box extends StatefulWidget {
     if (this.value == 0) return '';
     return this.value.toString();
   }
-
-//  MaterialColor getBorderColor() {
-//    if (isInitalValue) return Colors.red;
-//   if (isSelected) return Colors.blue;
-//  }
 
   @override
   _BoxState createState() => _BoxState();
@@ -62,7 +60,7 @@ class _BoxState extends State<Box> {
           if (!widget.isInitalValue) widget.callback(widget.position);
         },
         onLongPress: () {
-          if (!widget.isInitalValue) {/* Wert löschen */}
+          if (!widget.isInitalValue) widget.delete(widget.position);
         },
         child: Container(
           margin: EdgeInsets.only(
@@ -72,29 +70,29 @@ class _BoxState extends State<Box> {
               bottom: marginBottom),
           decoration: BoxDecoration(
             color: widget.isSelected
-                ? Colors.blue
-                : widget.correctAnswer() ? Colors.green : null,
+                ? Color.fromRGBO(8, 145, 207, 1)
+                : Color.fromRGBO(217, 163, 0, 1),
             border: Border(
               top: BorderSide(
                 //                    <--- top side
-                color: Colors.purple,
+                color: Color.fromRGBO(109, 81, 0, 1),
                 width: widget.position.item1 % 3 != 0
                     ? 1.0
                     : widget.position.item1 == 0 ? 4.0 : 3.0,
               ),
               right: BorderSide(
                 //                   <--- left side
-                color: Colors.purple,
+                color: Color.fromRGBO(109, 81, 0, 1),
                 width: widget.position.item2 == 8 ? 4.0 : 0.0,
               ),
               bottom: BorderSide(
                 //                    <--- top side
-                color: Colors.purple,
+                color: Color.fromRGBO(109, 81, 0, 1),
                 width: widget.position.item1 == 8 ? 4.0 : 0.0,
               ),
               left: BorderSide(
                 //                   <--- left side
-                color: Colors.purple,
+                color: Color.fromRGBO(109, 81, 0, 1),
                 width: widget.position.item2 % 3 != 0
                     ? 1.0
                     : widget.position.item2 == 0 ? 4.0 : 3.0,
