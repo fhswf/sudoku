@@ -10,44 +10,21 @@ class HomePage extends StatefulWidget {
 
   Tuple2<int, int> selectedBox = Tuple2(-1, -1);
 
-  List<List<dynamic>> resolution = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  ];
+  SudokuService service = SudokuService(1);
 
   List<List<dynamic>> acutalValues = [
     [1, 2, 3, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 4, 5, 6, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 7, 8, 9],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
-
-  final List<List<dynamic>> initialValues = [
-    [1, 2, 3, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 4, 5, 6, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 7, 8, 9],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
 
   void initGame() {
-    SudokuService service = SudokuService(1);
     // Erstellt keine Tiefe Kopie
     // acutalValues = new List<List<dynamic>>.from(initialValues);
   }
@@ -102,9 +79,9 @@ class _HomePageState extends State<HomePage> {
             MenuButtons(),
             Expanded(
               child: Sudoku(
-                  resolution: widget.resolution,
+                  resolution: widget.service.resolution,
                   acutalValues: widget.acutalValues,
-                  initialValues: widget.initialValues,
+                  initialValues: widget.service.initialValues,
                   callback: this.changeSelected,
                   delete: this.delete,
                   selectedBox: widget.selectedBox),
