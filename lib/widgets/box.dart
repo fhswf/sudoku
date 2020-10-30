@@ -104,7 +104,11 @@ class _BoxState extends State<Box> {
           child: Center(
             child: Text(
               widget.getValue(),
-              style: TextStyle(fontSize: 30.0),
+              style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: widget.isInitalValue
+                      ? FontWeight.bold
+                      : FontWeight.normal),
             ),
           ),
         ),

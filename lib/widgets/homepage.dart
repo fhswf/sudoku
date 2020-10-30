@@ -7,7 +7,7 @@ class HomePage extends StatefulWidget {
 
   Tuple2<int, int> selectedBox = Tuple2(-1, -1);
 
-  List<List<dynamic>> twoDList = [
+  List<List<dynamic>> resolution = [
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -18,28 +18,39 @@ class HomePage extends StatefulWidget {
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
   ];
+
   List<List<dynamic>> acutalValues = [
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
-    [0, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 4, 5, 6, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 7, 8, 9],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
 
-  HomePage({Key key, this.title}) : super(key: key);
+  final List<List<dynamic>> initialValues = [
+    [1, 2, 3, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 4, 5, 6, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 7, 8, 9],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ];
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+  void initGame() {
+    // Erstellt keine Tiefe Kopie
+    // acutalValues = new List<List<dynamic>>.from(initialValues);
+  }
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  HomePage({Key key, this.title}) : super(key: key) {
+    initGame();
+  }
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -104,16 +115,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
         body: Container(
@@ -151,24 +154,14 @@ class _HomePageState extends State<HomePage> {
                       elevation: 5,
                     ),
                   ),
-/*                  Schwierigkeitsgrad kann ausgewählt werden, wenn auf "New Game geklickt wird."
-                    Expanded(
-                    child: DropdownButton(
-                        items: difficultyItems,
-                        value: selectedDifficultyItem,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedDifficultyItem = value;
-                          });
-                        }),
-                  ),*/
                 ],
               ),
             ),
             Expanded(
               child: Sudoku(
-                  twoDList: widget.twoDList,
+                  resolution: widget.resolution,
                   acutalValues: widget.acutalValues,
+                  initialValues: widget.initialValues,
                   callback: this.changeSelected,
                   selectedBox: widget.selectedBox),
             ),

@@ -3,40 +3,33 @@ import 'box.dart';
 import 'package:tuple/tuple.dart';
 
 class Sudoku extends StatefulWidget {
-  List<List<dynamic>> twoDList;
+  List<List<dynamic>> resolution;
   List<List<dynamic>> acutalValues;
+  List<List<dynamic>> initialValues;
   Function callback;
   Tuple2<int, int> selectedBox;
 
   Sudoku(
       {Key key,
-      this.twoDList,
+      this.resolution,
       this.acutalValues,
+      this.initialValues,
       this.callback,
       this.selectedBox})
       : super(key: key) {
-    // Evtl. anstatt hier nur Zahlen in einem 2D Array zu speichern, eine Klasse SudokuKasten machen und dort die Zahl, Farben, Position, vonSpeilerGefüllt, RichtigeZahl speichern.
-    this.twoDList = twoDList;
+    this.resolution = resolution;
     this.acutalValues = acutalValues;
+    this.initialValues = initialValues;
     this.callback = callback;
     this.selectedBox = selectedBox;
   }
 
   @override
-  _SudokuState createState() => _SudokuState(twoDList, acutalValues);
+  _SudokuState createState() => _SudokuState();
 }
 
 class _SudokuState extends State<Sudoku> {
-  List<List<Widget>>
-      twoDWidgetList; // Evtl hier die Widgets abspeichern, zu den einzelnen Feldern
-  List<List<dynamic>> twoDList;
-  List<List<dynamic>> acutalValues;
-  String actualText = "1";
-
-  _SudokuState(List<List<dynamic>> twoDList, List<List<dynamic>> acutalValues) {
-    this.twoDList = twoDList;
-    this.acutalValues = acutalValues;
-  }
+  _SudokuState() {}
 
   List<Widget> getSudokuFields() {
     List<Widget> fields = List<Widget>();
@@ -48,9 +41,11 @@ class _SudokuState extends State<Sudoku> {
         bool isSelected =
             widget.selectedBox.item1 == i && widget.selectedBox.item2 == j;
 
-        var box = Box(twoDList[i][j], Tuple2(i, j), widget.callback,
-            value: acutalValues[i][j],
-            isInitalValue: false,
+        var box = Box(widget.resolution[i][j], Tuple2(i, j), widget.callback,
+            value: widget.acutalValues[i][j],
+            isInitalValue:
+                widget.acutalValues[i][j] == widget.initialValues[i][j] &&
+                    widget.initialValues[i][j] != 0,
             isSelected: isSelected);
 
         childs.add(box);
