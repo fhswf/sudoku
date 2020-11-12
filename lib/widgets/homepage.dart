@@ -12,25 +12,26 @@ class HomePage extends StatefulWidget {
 
   SudokuService service = SudokuService(1);
 
-  List<List<dynamic>> acutalValues = [
-    [1, 2, 3, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 4, 5, 6, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 7, 8, 9],
-  ];
+  List<List<dynamic>> acutalValues;
+
+  List<List<dynamic>> duplicateGrid(List<List<dynamic>> grid) {
+    List<List<dynamic>> copyGrid = [];
+    for (var row in grid) {
+      copyGrid.add([]);
+      for (var col in row) {
+        copyGrid.last.add(col);
+      }
+    }
+
+    return copyGrid;
+  }
 
   void initGame() {
-    // Erstellt keine Tiefe Kopie
-    // acutalValues = new List<List<dynamic>>.from(initialValues);
+    acutalValues = duplicateGrid(service.initialValues);
   }
 
   HomePage({Key key, this.title}) : super(key: key) {
-    // initGame();
+    initGame();
   }
 
   @override
