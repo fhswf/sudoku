@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'widgets/homepage.dart';
+import 'package:sudoku/widgets/homepage.dart';
 
 void main() {
   runApp(MyApp());

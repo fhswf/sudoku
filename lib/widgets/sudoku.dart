@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:sudoku/services/sudoku_service.dart';
 import 'box.dart';
 import 'package:tuple/tuple.dart';
 
 class Sudoku extends StatefulWidget {
-  List<List<dynamic>> resolution;
-  List<List<dynamic>> acutalValues;
-  List<List<dynamic>> initialValues;
+  SudokuService sudokuService;
   Function callback;
   Function delete;
   Tuple2<int, int> selectedBox;
 
   Sudoku(
       {Key key,
-      this.resolution,
-      this.acutalValues,
-      this.initialValues,
+      this.sudokuService,
       this.callback,
       this.delete,
       this.selectedBox})
       : super(key: key) {
-    this.resolution = resolution;
-    this.acutalValues = acutalValues;
-    this.initialValues = initialValues;
+    this.sudokuService = sudokuService;
     this.callback = callback;
     this.delete = delete;
     this.selectedBox = selectedBox;
@@ -44,12 +39,12 @@ class _SudokuState extends State<Sudoku> {
         bool isSelected =
             widget.selectedBox.item1 == i && widget.selectedBox.item2 == j;
 
-        var box = Box(widget.resolution[i][j], Tuple2(i, j), widget.callback,
-            widget.delete,
-            value: widget.acutalValues[i][j],
-            isInitalValue:
-                widget.acutalValues[i][j] == widget.initialValues[i][j] &&
-                    widget.initialValues[i][j] != 0,
+        int actualValue = widget.sudokuService.getAcutalValuesValue(i, j);
+        int initialValue = widget.sudokuService.getInitialValuesValue(i, j);
+        var box = Box(widget.sudokuService.getResolutionValue(i, j),
+            Tuple2(i, j), widget.callback, widget.delete,
+            value: actualValue,
+            isInitalValue: actualValue == initialValue && initialValue != 0,
             isSelected: isSelected);
 
         childs.add(box);

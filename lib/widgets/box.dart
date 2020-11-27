@@ -78,7 +78,9 @@ class _BoxState extends State<Box> {
                 color: Color.fromRGBO(109, 81, 0, 1),
                 width: widget.position.item1 % 3 != 0
                     ? 1.0
-                    : widget.position.item1 == 0 ? 4.0 : 3.0,
+                    : widget.position.item1 == 0
+                        ? 4.0
+                        : 3.0,
               ),
               right: BorderSide(
                 //                   <--- left side
@@ -95,7 +97,9 @@ class _BoxState extends State<Box> {
                 color: Color.fromRGBO(109, 81, 0, 1),
                 width: widget.position.item2 % 3 != 0
                     ? 1.0
-                    : widget.position.item2 == 0 ? 4.0 : 3.0,
+                    : widget.position.item2 == 0
+                        ? 4.0
+                        : 3.0,
               ),
             ),
           ), //       <--- BoxDecoration here

@@ -21,7 +21,7 @@ class NumberButtons extends StatelessWidget {
             child: Text((i).toString(), style: TextStyle(fontSize: 20)),
             color: Colors.orange,
             textColor: Colors.black,
-            elevation: 5,
+            elevation: 1,
           ),
         ),
       );

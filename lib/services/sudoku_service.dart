@@ -1,43 +1,52 @@
 import 'dart:math';
+import '../utility/sudokuarray.dart';
+import '../utility/difficulty.dart';
+import 'package:flutter_charts/flutter_charts.dart';
 
 class SudokuService {
   List<List<dynamic>> resolution;
   List<List<dynamic>> initialValues;
-  int difficulty = 0;
+  List<List<dynamic>> acutalValues;
+  Difficulty difficulty;
+  int difficultyInt = 0;
   int counter;
 
-  SudokuService(int difficulty) {
+  SudokuService() {}
+
+  void resetGame() {
+    resolution = null;
+    initialValues = null;
+  }
+
+  int getInitialValuesValue(int row, int column) {
+    return SudokuArray.getValueFromSudokuArray(initialValues, row, column);
+  }
+
+  int getAcutalValuesValue(int row, int column) {
+    return SudokuArray.getValueFromSudokuArray(acutalValues, row, column);
+  }
+
+  int getResolutionValue(int row, int column) {
+    return SudokuArray.getValueFromSudokuArray(resolution, row, column);
+  }
+
+  void setDifficulty(Difficulty difficulty) {
     this.difficulty = difficulty;
-    // generateNewGame();
-    implementierung();
+    switch (this.difficulty) {
+      case Difficulty.Easy:
+        this.difficultyInt = 5;
+        break;
+      case Difficulty.Normal:
+        this.difficultyInt = 10;
+        break;
+      case Difficulty.Hard:
+        this.difficultyInt = 15;
+        break;
+    }
   }
 
-  void generateNewGame() {
-    this.initialValues = [
-      [1, 2, 3, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 4, 5, 6, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 7, 8, 9],
-    ];
-    this.resolution = [
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    ];
-  }
-
-  void implementierung() {
+  void generateNewGame({Difficulty difficulty = Difficulty.Easy}) {
+    setDifficulty(difficulty);
     // https://www.101computing.net/sudoku-generator-algorithm/
     // https://www.101computing.net/backtracking-algorithm-sudoku-solver/
     // initialise empty 9 by 9 grid
@@ -54,46 +63,10 @@ class SudokuService {
     ];
 
     fillGrid(grid);
-    this.resolution = duplicateGrid(grid);
+    this.resolution = SudokuArray.duplicateGrid(grid);
     removeNumbersFromSudoku(grid);
     this.initialValues = grid;
-  }
-
-  // A function to check if the grid is full
-  bool checkGrid(List<List<dynamic>> grid) {
-    // return !grid.contains(0); // Prüfen ob das funktioniert
-    for (int i = 0; i < grid.length; i++) {
-      for (int j = 0; j < grid.length; j++) {
-        if (grid[i][j] == 0) return false;
-      }
-    }
-
-    // We have a complete grid!
-    return true;
-  }
-
-  // Source: https://pub.dev/documentation/flutter_charts/latest/flutter_charts/transpose.html
-  List<List<T>> transpose<T>(List<List<T>> colsInRows) {
-    int nRows = colsInRows.length;
-    if (colsInRows.length == 0) return colsInRows;
-
-    int nCols = colsInRows[0].length;
-    if (nCols == 0) throw new StateError("Degenerate matrix");
-
-    // Init the transpose to make sure the size is right
-    List<List<T>> rowsInCols = new List(nCols);
-    for (int col = 0; col < nCols; col++) {
-      rowsInCols[col] = new List(nRows);
-    }
-
-    // Transpose
-    for (int row = 0; row < nRows; row++) {
-      for (int col = 0; col < nCols; col++) {
-        rowsInCols[col][row] = colsInRows[row][col];
-      }
-    }
-
-    return rowsInCols;
+    acutalValues = SudokuArray.duplicateGrid(initialValues);
   }
 
   // A backtracking/recursive function to check all possible combinations of numbers until a solution is found
@@ -117,31 +90,31 @@ class SudokuService {
               List<dynamic> square = [];
               if (row < 3) {
                 if (col < 3)
-                  square = getSquareValues(grid, 0, 0);
+                  square = SudokuArray.getSquareValues(grid, 0, 0);
                 else if (col < 6)
-                  square = getSquareValues(grid, 0, 3);
+                  square = SudokuArray.getSquareValues(grid, 0, 3);
                 else
-                  square = getSquareValues(grid, 0, 6);
+                  square = SudokuArray.getSquareValues(grid, 0, 6);
               } else if (row < 6) {
                 if (col < 3)
-                  square = getSquareValues(grid, 3, 0);
+                  square = SudokuArray.getSquareValues(grid, 3, 0);
                 else if (col < 6)
-                  square = getSquareValues(grid, 3, 3);
+                  square = SudokuArray.getSquareValues(grid, 3, 3);
                 else
-                  square = getSquareValues(grid, 3, 6);
+                  square = SudokuArray.getSquareValues(grid, 3, 6);
               } else {
                 if (col < 3)
-                  square = getSquareValues(grid, 6, 0);
+                  square = SudokuArray.getSquareValues(grid, 6, 0);
                 else if (col < 6)
-                  square = getSquareValues(grid, 6, 3);
+                  square = SudokuArray.getSquareValues(grid, 6, 3);
                 else
-                  square = getSquareValues(grid, 6, 6);
+                  square = SudokuArray.getSquareValues(grid, 6, 6);
               }
 
               // Check that this value has not already be used on this 3x3 square
               if (!square.contains(value)) {
                 grid[row][col] = value;
-                if (checkGrid(grid)) {
+                if (SudokuArray.checkGrid(grid)) {
                   this.counter++;
                   break;
                 } else {
@@ -159,18 +132,6 @@ class SudokuService {
     grid[row][col] = 0;
 
     return false;
-  }
-
-  List<dynamic> getSquareValues(List<List<dynamic>> grid, int row, int column) {
-    List<dynamic> square = [];
-
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        square.add(grid[i + row][j + column]);
-      }
-    }
-
-    return square;
   }
 
   List shuffle(List items) {
@@ -210,31 +171,31 @@ class SudokuService {
               List<dynamic> square = [];
               if (row < 3) {
                 if (col < 3)
-                  square = getSquareValues(grid, 0, 0);
+                  square = SudokuArray.getSquareValues(grid, 0, 0);
                 else if (col < 6)
-                  square = getSquareValues(grid, 0, 3);
+                  square = SudokuArray.getSquareValues(grid, 0, 3);
                 else
-                  square = getSquareValues(grid, 0, 6);
+                  square = SudokuArray.getSquareValues(grid, 0, 6);
               } else if (row < 6) {
                 if (col < 3)
-                  square = getSquareValues(grid, 3, 0);
+                  square = SudokuArray.getSquareValues(grid, 3, 0);
                 else if (col < 6)
-                  square = getSquareValues(grid, 3, 3);
+                  square = SudokuArray.getSquareValues(grid, 3, 3);
                 else
-                  square = getSquareValues(grid, 3, 6);
+                  square = SudokuArray.getSquareValues(grid, 3, 6);
               } else {
                 if (col < 3)
-                  square = getSquareValues(grid, 6, 0);
+                  square = SudokuArray.getSquareValues(grid, 6, 0);
                 else if (col < 6)
-                  square = getSquareValues(grid, 6, 3);
+                  square = SudokuArray.getSquareValues(grid, 6, 3);
                 else
-                  square = getSquareValues(grid, 6, 6);
+                  square = SudokuArray.getSquareValues(grid, 6, 6);
               }
 
               // Check that this value has not already be used on this 3x3 square
               if (!square.contains(value)) {
                 grid[row][col] = value;
-                if (checkGrid(grid)) {
+                if (SudokuArray.checkGrid(grid)) {
                   return true;
                 } else {
                   if (fillGrid(grid)) {
@@ -253,24 +214,12 @@ class SudokuService {
     return false;
   }
 
-  List<List<dynamic>> duplicateGrid(List<List<dynamic>> grid) {
-    List<List<dynamic>> copyGrid = [];
-    for (var row in grid) {
-      copyGrid.add([]);
-      for (var col in row) {
-        copyGrid.last.add(col);
-      }
-    }
-
-    return copyGrid;
-  }
-
   void removeNumbersFromSudoku(List<List<dynamic>> grid) {
     // Start Removing Numbers one by one
 
     // A higher number of attempts will end up removing more numbers from the grid
     // Potentially resulting in more difficiult grids to solve!
-    int attempts = 5;
+    int attempts = this.difficultyInt;
     this.counter = 1;
     while (attempts > 0) {
       // Select a random cell that is not already empty
@@ -286,7 +235,7 @@ class SudokuService {
       grid[row][col] = 0;
 
       // Take a full copy of the grid
-      List<List<dynamic>> copyGrid = duplicateGrid(grid);
+      List<List<dynamic>> copyGrid = SudokuArray.duplicateGrid(grid);
 
       // Count the number of solutions that this grid has (using a backtracking approach implemented in the solveGrid() function)
       this.counter = 0;

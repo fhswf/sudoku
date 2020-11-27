@@ -1,96 +1,119 @@
 import 'package:flutter/material.dart';
-import 'package:sudoku/widgets/sudoku.dart';
+import 'package:sudoku/utility/dialoghelper.dart';
 import 'package:tuple/tuple.dart';
-import 'menubuttons.dart';
+import 'package:sudoku/utility/difficulty.dart';
+import 'package:sudoku/utility/sudokuarray.dart';
+import 'package:sudoku/widgets/sudoku.dart';
+import 'package:sudoku/widgets/popupmenu.dart';
+import 'package:sudoku/widgets/sidemenu.dart';
+import 'package:sudoku/services/sudoku_service.dart';
 import 'numberbuttons.dart';
-import '../services/sudoku_service.dart';
+import 'package:sudoku/utility/SudokuPersister.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
 
   Tuple2<int, int> selectedBox = Tuple2(-1, -1);
 
-  SudokuService service = SudokuService(1);
+  SudokuService service = SudokuService();
 
-  List<List<dynamic>> acutalValues;
+  bool helpOn = false;
 
-  List<List<dynamic>> duplicateGrid(List<List<dynamic>> grid) {
-    List<List<dynamic>> copyGrid = [];
-    for (var row in grid) {
-      copyGrid.add([]);
-      for (var col in row) {
-        copyGrid.last.add(col);
-      }
-    }
-
-    return copyGrid;
-  }
-
-  void initGame() {
-    acutalValues = duplicateGrid(service.initialValues);
-  }
-
-  HomePage({Key key, this.title}) : super(key: key) {
-    initGame();
-  }
+  HomePage({Key key, this.title}) : super(key: key) {}
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<DropdownMenuItem> difficultyItems = <DropdownMenuItem>[
-    DropdownMenuItem(child: Text("Easy"), value: 1),
-    DropdownMenuItem(child: Text("Normal"), value: 2),
-    DropdownMenuItem(child: Text("Hard"), value: 3),
-  ];
-  int selectedDifficultyItem = 1;
-
   void setNumber(int value) {
-    setState(() => widget.acutalValues[widget.selectedBox.item1]
-        [widget.selectedBox.item2] = value);
+    if (widget.selectedBox.item1 != -1 && widget.selectedBox.item2 != -1)
+      setState(() {
+        widget.service.acutalValues[widget.selectedBox.item1]
+            [widget.selectedBox.item2] = value;
+        if (SudokuArray.isSudokuEqual(
+            widget.service.acutalValues, widget.service.resolution)) {
+          resetSelected();
+          widget.service.acutalValues = null;
+          widget.service.resetGame();
+          DialogHelper.showWinDialog(context);
+        }
+      });
   }
 
   void changeSelected(Tuple2 tuple) {
-    setState(() => widget.selectedBox = tuple);
+    if (widget.service.acutalValues != null)
+      setState(() => widget.selectedBox = tuple);
+  }
+
+  void resetSelected() {
+    Tuple2<int, int> tuple = Tuple2(-1, -1);
+    changeSelected(tuple);
   }
 
   void delete(Tuple2 tuple) {
     setState(() {
-      widget.acutalValues[tuple.item1][tuple.item2] = 0;
+      widget.service.acutalValues[tuple.item1][tuple.item2] = 0;
       widget.selectedBox = tuple;
+    });
+  }
+
+  void newGame(Difficulty difficulty) {
+    setState(() {
+      resetSelected();
+      widget.service.generateNewGame(difficulty: difficulty);
+    });
+  }
+
+  void saveGame() {
+    SudokuPersister.saveSudoku(widget.service);
+  }
+
+  void loadGame() async {
+    var sudoku = await SudokuPersister.loadSudoku(widget.service);
+    setState(() {
+      widget.service.acutalValues = sudoku;
+
+      resetSelected();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: <Widget>[
+          PopupMenu(widget.helpOn),
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          //image: DecorationImage(
+          //image: AssetImage("images/background.jpg"),
+          // fit: BoxFit.cover,
+          // ),
         ),
-        body: Container(
-          decoration: BoxDecoration(
-            color: Colors.black,
-            //image: DecorationImage(
-            //image: AssetImage("images/background.jpg"),
-            // fit: BoxFit.cover,
-            // ),
+        child: Column(children: [
+          Expanded(
+            child: Sudoku(
+                sudokuService: widget.service,
+                callback: this.changeSelected,
+                delete: this.delete,
+                selectedBox: widget.selectedBox),
           ),
-          child: Column(children: [
-            MenuButtons(),
-            Expanded(
-              child: Sudoku(
-                  resolution: widget.service.resolution,
-                  acutalValues: widget.acutalValues,
-                  initialValues: widget.service.initialValues,
-                  callback: this.changeSelected,
-                  delete: this.delete,
-                  selectedBox: widget.selectedBox),
-            ),
-            NumberButtons(
-              this.setNumber,
-            ),
-          ]),
-        ));
+          NumberButtons(
+            this.setNumber,
+          ),
+        ]),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: SideMenu(widget.service, newGame, saveGame, loadGame),
+      ),
+    );
   }
 }
