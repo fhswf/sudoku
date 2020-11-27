@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
   bool helpOn = false;
 
-  HomePage({Key key, this.title}) : super(key: key) {}
+  HomePage({Key key, this.title}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();

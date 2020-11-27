@@ -27,7 +27,7 @@ class Sudoku extends StatefulWidget {
 }
 
 class _SudokuState extends State<Sudoku> {
-  _SudokuState() {}
+  _SudokuState();
 
   List<Widget> getSudokuFields() {
     List<Widget> fields = List<Widget>();

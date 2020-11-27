@@ -11,7 +11,7 @@ class SudokuService {
   int difficultyInt = 0;
   int counter;
 
-  SudokuService() {}
+  SudokuService();
 
   void resetGame() {
     resolution = null;
