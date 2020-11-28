@@ -42,7 +42,7 @@ class _SudokuState extends State<Sudoku> {
         int actualValue = widget.sudokuService.getAcutalValuesValue(i, j);
         int initialValue = widget.sudokuService.getInitialValuesValue(i, j);
         var box = Box(widget.sudokuService.getResolutionValue(i, j),
-            Tuple2(i, j), widget.callback, widget.delete,
+            Tuple2(i, j), widget.callback, widget.delete, widget.sudokuService,
             value: actualValue,
             isInitalValue: actualValue == initialValue && initialValue != 0,
             isSelected: isSelected);

@@ -17,8 +17,6 @@ class HomePage extends StatefulWidget {
 
   SudokuService service = SudokuService();
 
-  bool helpOn = false;
-
   HomePage({Key key, this.title}) : super(key: key);
 
   @override
@@ -36,7 +34,8 @@ class _HomePageState extends State<HomePage> {
           resetSelected();
           widget.service.acutalValues = null;
           widget.service.resetGame();
-          DialogHelper.showWinDialog(context);
+          var dialogHelper = DialogHelper(context);
+          dialogHelper.showWinDialog();
         }
       });
   }
@@ -65,17 +64,25 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void saveGame() {
-    SudokuPersister.saveSudoku(widget.service);
+  void saveGame() async {
+    var dialogHelper = DialogHelper(context);
+    await dialogHelper
+        .showWinDialog(); // ToDo BUG!!! Ich darf diese Zeile nicht entfernen, sonst wird der SaveDialog nicht mehr angezeigt.
+    await dialogHelper.showSaveDialog(
+        SudokuPersister.saveSudoku, widget.service);
   }
 
   void loadGame() async {
-    var sudoku = await SudokuPersister.loadSudoku(widget.service);
-    setState(() {
-      widget.service.acutalValues = sudoku;
+    var dialogHelper = DialogHelper(context);
+    SudokuPersister.loadSudoku(widget.service, dialogHelper).then((value) => {
+          setState(() {
+            resetSelected();
+          })
+        });
+  }
 
-      resetSelected();
-    });
+  void setHelp(bool value) {
+    setState(() => widget.service.helpOn = !value);
   }
 
   @override
@@ -84,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          PopupMenu(widget.helpOn),
+          PopupMenu(widget.service, setHelp),
         ],
       ),
       body: Container(

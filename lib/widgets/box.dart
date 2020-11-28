@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sudoku/services/sudoku_service.dart';
 import 'package:tuple/tuple.dart';
 
 /// Speichert den aktuellen Status eines Kästchens in dem Sudokufeld.
@@ -21,8 +22,10 @@ class Box extends StatefulWidget {
 
   Function delete;
 
+  SudokuService _sudokuService;
+
   Box(int solutionValue, Tuple2<int, int> position, Function callback,
-      Function delete,
+      Function delete, SudokuService sudokuService,
       {int value = 0, bool isInitalValue = false, bool isSelected = false}) {
     this.solutionValue = solutionValue;
     this.value = value;
@@ -31,6 +34,7 @@ class Box extends StatefulWidget {
     this.callback = callback;
     this.delete = delete;
     this.isSelected = isSelected;
+    this._sudokuService = sudokuService;
   }
 
   bool correctAnswer() {
@@ -47,6 +51,22 @@ class Box extends StatefulWidget {
 }
 
 class _BoxState extends State<Box> {
+  Color getBackgroundColorForBox() {
+    Color color = Color.fromRGBO(217, 163, 0, 1);
+
+    if (widget.isInitalValue) {
+      return color;
+    } else if (widget.isSelected) {
+      return Color.fromRGBO(8, 145, 207, 1);
+    } else if (widget._sudokuService.helpOn && widget.value != 0) {
+      color = widget.correctAnswer() ? Colors.green : Colors.red;
+    } else {
+      return color;
+    }
+
+    return color;
+  }
+
   @override
   Widget build(BuildContext context) {
     double marginLeft = 0;
@@ -69,9 +89,7 @@ class _BoxState extends State<Box> {
               right: marginRight,
               bottom: marginBottom),
           decoration: BoxDecoration(
-            color: widget.isSelected
-                ? Color.fromRGBO(8, 145, 207, 1)
-                : Color.fromRGBO(217, 163, 0, 1),
+            color: getBackgroundColorForBox(),
             border: Border(
               top: BorderSide(
                 //                    <--- top side

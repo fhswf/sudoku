@@ -10,6 +10,7 @@ class SudokuService {
   Difficulty difficulty;
   int difficultyInt = 0;
   int counter;
+  bool helpOn = false;
 
   SudokuService();
 

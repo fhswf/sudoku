@@ -1,5 +1,6 @@
 import 'package:sudoku/services/sudoku_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sudoku/utility/dialoghelper.dart';
 import '../utility/sudokuarray.dart';
 
 class SudokuPersister {
@@ -18,17 +19,25 @@ class SudokuPersister {
         SudokuArray.getSudokuAsStringList(sudokuService.acutalValues));
   }
 
-  static Future<List<List<dynamic>>> loadSudoku(
-      SudokuService sudokuService) async {
+  static Future loadSudoku(
+      SudokuService sudokuService, DialogHelper dialogHelper) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     sudokuService.initialValues =
         SudokuArray.getSudokuFromStringList(prefs.getStringList(INITIALVALUES));
     sudokuService.resolution =
         SudokuArray.getSudokuFromStringList(prefs.getStringList(RESOLUTION));
-    var acutalValues =
+    sudokuService.acutalValues =
         SudokuArray.getSudokuFromStringList(prefs.getStringList(ACTUALVALUES));
 
-    return acutalValues;
+    if (sudokuService.initialValues == null ||
+        sudokuService.resolution == null ||
+        sudokuService.acutalValues == null) {
+      sudokuService.initialValues = null;
+      sudokuService.resolution = null;
+      sudokuService.acutalValues = null;
+
+      dialogHelper.showLoadFailureDialog();
+    }
   }
 }
