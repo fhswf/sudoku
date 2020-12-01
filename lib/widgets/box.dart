@@ -53,7 +53,7 @@ class Box extends StatefulWidget {
 class _BoxState extends State<Box> {
   Color getBackgroundColorForBox() {
     // Color color = Color.fromRGBO(217, 163, 0, 1).withOpacity(0.5);
-    Color color = Colors.white.withOpacity(0.2);
+    Color color = Colors.white.withOpacity(0.1);
 
     if (widget.isInitalValue) {
       return color;
@@ -67,7 +67,7 @@ class _BoxState extends State<Box> {
   }
 
   Color getBorderColor() {
-    return Colors.blue[600];
+    return Colors.blue[800];
   }
 
   @override

@@ -49,6 +49,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - images/background.jpg
+  - images/sidemenu.jpg
   - images/congrats_0.gif
   - images/congrats_1.gif
   - images/congrats_2.gif

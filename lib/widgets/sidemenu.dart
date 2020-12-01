@@ -18,49 +18,77 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      // Important: Remove any padding from the ListView.
-      //padding: EdgeInsets.zero,
-      children: <Widget>[
-        ListTile(
-          title: Text('Start Easy Game'),
-          onTap: () {
-            newGame(Difficulty.Easy);
-            // ToDo
-            // Später entfernen, sowie das Sudokuservice aus der Klasse entfernen
-            sudokuService.acutalValues = sudokuService.resolution;
-            Navigator.pop(context);
-          },
+    return Container(
+      decoration: BoxDecoration(
+        image: new DecorationImage(
+          image: AssetImage("images/sidemenu.jpg"),
+          fit: BoxFit.cover,
         ),
-        ListTile(
-          title: Text('Start Normal Game'),
-          onTap: () {
-            newGame(Difficulty.Normal);
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          title: Text('Start Hard Game'),
-          onTap: () {
-            newGame(Difficulty.Hard);
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          title: Text('Save Game'),
-          onTap: () {
-            saveGame();
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          title: Text('Load Game'),
-          onTap: () {
-            loadGame();
-            Navigator.pop(context);
-          },
-        ),
-      ],
+      ),
+      child: ListView(
+        children: <Widget>[
+          ListTile(
+            title: Text(
+              'Start Easy Game',
+              style: new TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              newGame(Difficulty.Easy);
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Start Normal Game',
+              style: new TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              newGame(Difficulty.Normal);
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Start Hard Game',
+              style: new TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              newGame(Difficulty.Hard);
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Save Game',
+              style: new TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              saveGame();
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Load Game',
+              style: new TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              loadGame();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

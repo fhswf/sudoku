@@ -68,8 +68,6 @@ class _HomePageState extends State<HomePage> {
 
   void saveGame() async {
     var dialogHelper = DialogHelper(context);
-    await dialogHelper
-        .showWinDialog(); // ToDo BUG!!! Ich darf diese Zeile nicht entfernen, sonst wird der SaveDialog nicht mehr angezeigt.
     await dialogHelper.showSaveDialog(
         SudokuPersister.saveSudoku, widget.service);
   }

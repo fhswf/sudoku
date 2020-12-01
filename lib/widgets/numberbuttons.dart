@@ -17,7 +17,7 @@ class NumberButtons extends StatelessWidget {
           child: RaisedButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
-                side: BorderSide(color: Colors.blue[900])),
+                side: BorderSide(color: Colors.blue[900], width: 2)),
             onPressed: () {
               this.setNumber(i);
             },
