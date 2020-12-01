@@ -38,8 +38,10 @@ class DialogHelper {
             ),
           ),
           actions: <Widget>[
-            TextButton(
+            RaisedButton(
               child: Text('Ok'),
+              textColor: Colors.black,
+              color: Colors.green[900],
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -62,26 +64,31 @@ class DialogHelper {
             child: ListBody(
               children: <Widget>[
                 Text('Do you really want to save the current Sudoku.'),
-                Text('If you have saved a other game, it will be overwritten.'),
+                Text(
+                    'If you have already saved another game, it will be overwritten.'),
               ],
             ),
           ),
           actions: <Widget>[
-            TextButton(
+            RaisedButton(
               child: Text('Save'),
+              color: Colors.yellow[700],
+              textColor: Colors.black,
               onPressed: () {
                 callback(service);
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
+            RaisedButton(
               child: Text('Cancel'),
+              color: Colors.yellow[700],
+              textColor: Colors.black,
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
           ],
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.yellow,
         );
       },
     );
@@ -103,14 +110,16 @@ class DialogHelper {
             ),
           ),
           actions: <Widget>[
-            TextButton(
+            RaisedButton(
               child: Text('Ok'),
+              color: Colors.red[800],
+              textColor: Colors.black,
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
           ],
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.red,
         );
       },
     );

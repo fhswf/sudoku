@@ -17,7 +17,9 @@ class HomePage extends StatefulWidget {
 
   SudokuService service = SudokuService();
 
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({Key key, this.title}) : super(key: key) {
+    service.generateNewGame(difficulty: Difficulty.Easy);
+  }
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -96,11 +98,11 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.black,
-          //image: DecorationImage(
-          //image: AssetImage("images/background.jpg"),
-          // fit: BoxFit.cover,
-          // ),
+          //color: Colors.blue[200],
+          image: DecorationImage(
+            image: AssetImage("images/background.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Column(children: [
           Expanded(
@@ -123,4 +125,16 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  void test(context) {
+    Scaffold.of(context).openDrawer();
+  }
+
+  /* @override
+  void initState() {
+    super.initState();
+    print('hello girl');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => test(context));
+  }*/
 }

@@ -15,11 +15,14 @@ class NumberButtons extends StatelessWidget {
       buttons.add(
         Expanded(
           child: RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+                side: BorderSide(color: Colors.blue[900])),
             onPressed: () {
               this.setNumber(i);
             },
             child: Text((i).toString(), style: TextStyle(fontSize: 20)),
-            color: Colors.orange,
+            color: Colors.blue[600],
             textColor: Colors.black,
             elevation: 1,
           ),

@@ -52,19 +52,22 @@ class Box extends StatefulWidget {
 
 class _BoxState extends State<Box> {
   Color getBackgroundColorForBox() {
-    Color color = Color.fromRGBO(217, 163, 0, 1);
+    // Color color = Color.fromRGBO(217, 163, 0, 1).withOpacity(0.5);
+    Color color = Colors.white.withOpacity(0.2);
 
     if (widget.isInitalValue) {
       return color;
     } else if (widget.isSelected) {
-      return Color.fromRGBO(8, 145, 207, 1);
+      return Color.fromRGBO(8, 145, 207, 1).withOpacity(0.5);
     } else if (widget._sudokuService.helpOn && widget.value != 0) {
       color = widget.correctAnswer() ? Colors.green : Colors.red;
-    } else {
-      return color;
     }
 
     return color;
+  }
+
+  Color getBorderColor() {
+    return Colors.blue[600];
   }
 
   @override
@@ -93,7 +96,7 @@ class _BoxState extends State<Box> {
             border: Border(
               top: BorderSide(
                 //                    <--- top side
-                color: Color.fromRGBO(109, 81, 0, 1),
+                color: getBorderColor(),
                 width: widget.position.item1 % 3 != 0
                     ? 1.0
                     : widget.position.item1 == 0
@@ -102,17 +105,17 @@ class _BoxState extends State<Box> {
               ),
               right: BorderSide(
                 //                   <--- left side
-                color: Color.fromRGBO(109, 81, 0, 1),
+                color: getBorderColor(),
                 width: widget.position.item2 == 8 ? 4.0 : 0.0,
               ),
               bottom: BorderSide(
                 //                    <--- top side
-                color: Color.fromRGBO(109, 81, 0, 1),
+                color: getBorderColor(),
                 width: widget.position.item1 == 8 ? 4.0 : 0.0,
               ),
               left: BorderSide(
                 //                   <--- left side
-                color: Color.fromRGBO(109, 81, 0, 1),
+                color: getBorderColor(),
                 width: widget.position.item2 % 3 != 0
                     ? 1.0
                     : widget.position.item2 == 0
