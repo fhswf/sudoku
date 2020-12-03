@@ -1,7 +1,7 @@
 import 'package:sudoku/services/sudoku_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku/utility/dialoghelper.dart';
-import '../utility/sudokuarray.dart';
+import 'sudokuarray.dart';
 
 class SudokuPersister {
   static const String INITIALVALUES = 'initialValues';

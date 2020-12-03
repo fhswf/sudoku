@@ -8,7 +8,7 @@ import 'package:sudoku/widgets/popupmenu.dart';
 import 'package:sudoku/widgets/sidemenu.dart';
 import 'package:sudoku/services/sudoku_service.dart';
 import 'numberbuttons.dart';
-import 'package:sudoku/utility/SudokuPersister.dart';
+import 'package:sudoku/utility/sudokupersister.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {

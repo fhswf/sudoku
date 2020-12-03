@@ -55,7 +55,7 @@ class SudokuArray {
   }
 
   static List<List<int>> getSudokuFromStringList(List<String> stringlist) {
-    if (stringlist.length != 81) return null;
+    if (stringlist == null || stringlist.length != 81) return null;
 
     List<List<int>> sudokuArray = [];
     for (int i = 0; i < stringlist.length; i++) {
