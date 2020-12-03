@@ -11,6 +11,10 @@ class SudokuPersister {
   static void saveSudoku(SudokuService sudokuService) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    if (sudokuService.initialValues == null ||
+        sudokuService.resolution == null ||
+        sudokuService.acutalValues == null) return;
+
     prefs.setStringList(INITIALVALUES,
         SudokuArray.getSudokuAsStringList(sudokuService.initialValues));
     prefs.setStringList(RESOLUTION,
