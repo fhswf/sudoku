@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-
 import 'package:sudoku/services/sudoku_service.dart';
 
 class DialogHelper {
   final int _countOfGifs = 16;
-  BuildContext _context;
+  final BuildContext _context;
 
-  DialogHelper(BuildContext context) {
-    this._context = context;
-  }
+  DialogHelper(this._context);
 
-  String getRandomCongratsGif() {
+  String _getRandomCongratsGif() {
     var random = new Random();
-    int randomNumber = random.nextInt(_countOfGifs);
+    var randomNumber = random.nextInt(_countOfGifs);
 
     return "images/congrats_${randomNumber.toString()}.gif";
   }
 
   Future<void> showWinDialog() async {
     return showDialog<void>(
-      context: this._context,
-      barrierDismissible: false, // user must tap button!
+      context: _context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Congratulations!'),
@@ -30,7 +27,7 @@ class DialogHelper {
               children: <Widget>[
                 Text('You have successfully solved the Sudoku.'),
                 Image.asset(
-                  getRandomCongratsGif(),
+                  _getRandomCongratsGif(),
                   height: 250.0,
                   width: 250.0,
                 )
@@ -55,8 +52,8 @@ class DialogHelper {
 
   Future<void> showSaveDialog(Function callback, SudokuService service) async {
     return showDialog<void>(
-      context: this._context,
-      barrierDismissible: false, // user must tap button!
+      context: _context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Save Sudoku?'),
@@ -96,8 +93,8 @@ class DialogHelper {
 
   Future<void> showLoadFailureDialog() async {
     return showDialog<void>(
-      context: this._context,
-      barrierDismissible: false, // user must tap button!
+      context: _context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Loading failed!'),

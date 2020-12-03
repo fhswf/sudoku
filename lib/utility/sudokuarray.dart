@@ -1,12 +1,26 @@
 class SudokuArray {
+  static List<List<int>> getEmptySudokuGrid() {
+    return [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+  }
+
   static int getValueFromSudokuArray(
-      List<List<dynamic>> grid, int row, int column) {
+      List<List<int>> grid, int row, int column) {
     if (grid == null) return 0;
     return grid[row][column];
   }
 
-  static List<List<dynamic>> duplicateGrid(List<List<dynamic>> grid) {
-    List<List<dynamic>> copyGrid = [];
+  static List<List<int>> duplicateSudokuGrid(List<List<int>> grid) {
+    List<List<int>> copyGrid = [];
     for (var row in grid) {
       copyGrid.add([]);
       for (var col in row) {
@@ -17,33 +31,18 @@ class SudokuArray {
     return copyGrid;
   }
 
-  static List<dynamic> getSquareValues(
-      List<List<dynamic>> grid, int row, int column) {
-    List<dynamic> square = [];
-
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        square.add(grid[i + row][j + column]);
-      }
-    }
-
-    return square;
-  }
-
   // A function to check if the grid is full
-  static bool checkGrid(List<List<dynamic>> grid) {
-    // return !grid.contains(0); // Prüfen ob das funktioniert
+  static bool checkSudokuGridFilled(List<List<int>> grid) {
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid.length; j++) {
         if (grid[i][j] == 0) return false;
       }
     }
 
-    // We have a complete grid!
     return true;
   }
 
-  static List<String> getSudokuAsStringList(List<List<dynamic>> sudoku) {
+  static List<String> getSudokuAsStringList(List<List<int>> sudoku) {
     List<String> stringlist = [];
 
     sudoku.forEach((element) {
@@ -55,10 +54,10 @@ class SudokuArray {
     return stringlist;
   }
 
-  static List<List<dynamic>> getSudokuFromStringList(List<String> stringlist) {
+  static List<List<int>> getSudokuFromStringList(List<String> stringlist) {
     if (stringlist.length != 81) return null;
 
-    List<List<dynamic>> sudokuArray = [];
+    List<List<int>> sudokuArray = [];
     for (int i = 0; i < stringlist.length; i++) {
       if (i % 9 == 0) {
         sudokuArray.add([]);
@@ -70,7 +69,7 @@ class SudokuArray {
   }
 
   static bool isSudokuEqual(
-      List<List<dynamic>> actualValues, List<List<dynamic>> resolution) {
+      List<List<int>> actualValues, List<List<int>> resolution) {
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
         if (actualValues[i][j] != resolution[i][j]) return false;
@@ -78,5 +77,43 @@ class SudokuArray {
     }
 
     return true;
+  }
+
+  static List<int> getSudokuSquareOfRowAndColumn(
+      List<List<int>> sudokuGrid, int row, int column) {
+    if (row < 3) {
+      if (column < 3)
+        return _getSquareValues(sudokuGrid, 0, 0);
+      else if (column < 6)
+        return _getSquareValues(sudokuGrid, 0, 3);
+      else
+        return _getSquareValues(sudokuGrid, 0, 6);
+    } else if (row < 6) {
+      if (column < 3)
+        return _getSquareValues(sudokuGrid, 3, 0);
+      else if (column < 6)
+        return _getSquareValues(sudokuGrid, 3, 3);
+      else
+        return _getSquareValues(sudokuGrid, 3, 6);
+    } else {
+      if (column < 3)
+        return _getSquareValues(sudokuGrid, 6, 0);
+      else if (column < 6)
+        return _getSquareValues(sudokuGrid, 6, 3);
+      else
+        return _getSquareValues(sudokuGrid, 6, 6);
+    }
+  }
+
+  static List<int> _getSquareValues(List<List<int>> grid, int row, int column) {
+    List<int> square = [];
+
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        square.add(grid[i + row][j + column]);
+      }
+    }
+
+    return square;
   }
 }

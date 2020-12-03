@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sudoku/services/sudoku_service.dart';
 
 class PopupMenu extends StatelessWidget {
-  SudokuService _service;
-  Function _callback;
+  final SudokuService _sudokuService;
+  final _callback;
 
-  PopupMenu(SudokuService service, Function callback) {
-    this._service = service;
-    this._callback = callback;
-  }
+  PopupMenu(this._sudokuService, this._callback);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +13,8 @@ class PopupMenu extends StatelessWidget {
       itemBuilder: (context) => [
         CheckedPopupMenuItem(
           child: Text('Help'),
-          checked: _service.helpOn,
-          value: _service.helpOn,
+          checked: _sudokuService.helpOn,
+          value: _sudokuService.helpOn,
         ),
       ],
       onSelected: (value) {

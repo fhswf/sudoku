@@ -33,9 +33,7 @@ class SudokuPersister {
     if (sudokuService.initialValues == null ||
         sudokuService.resolution == null ||
         sudokuService.acutalValues == null) {
-      sudokuService.initialValues = null;
-      sudokuService.resolution = null;
-      sudokuService.acutalValues = null;
+      sudokuService.resetGame();
 
       dialogHelper.showLoadFailureDialog();
     }

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
 class NumberButtons extends StatelessWidget {
-  Function setNumber;
+  final Function _setNumber;
 
-  NumberButtons(Function setNumber) {
-    this.setNumber = setNumber;
-  }
+  NumberButtons(this._setNumber);
 
-  List<Widget> createNumberButtons() {
+  List<Widget> _createNumberButtons() {
     List<Widget> buttons = List<Widget>();
     List<Widget> aligns = List<Widget>();
 
@@ -19,7 +17,7 @@ class NumberButtons extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 side: BorderSide(color: Colors.blue[900], width: 2)),
             onPressed: () {
-              this.setNumber(i);
+              _setNumber(i);
             },
             child: Text((i).toString(), style: TextStyle(fontSize: 20)),
             color: Colors.blue[600],
@@ -52,7 +50,7 @@ class NumberButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: createNumberButtons(),
+      children: _createNumberButtons(),
     );
   }
 }

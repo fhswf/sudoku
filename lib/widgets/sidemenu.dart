@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sudoku/services/sudoku_service.dart';
 import 'package:sudoku/utility/difficulty.dart';
 
 class SideMenu extends StatelessWidget {
-  SudokuService sudokuService;
-  Function newGame;
-  Function saveGame;
-  Function loadGame;
+  final Function _newGame;
+  final Function _saveGame;
+  final Function _loadGame;
 
-  SideMenu(SudokuService sudokuService, Function newGame, Function saveGame,
-      Function loadGame) {
-    this.sudokuService = sudokuService;
-    this.newGame = newGame;
-    this.saveGame = saveGame;
-    this.loadGame = loadGame;
-  }
+  SideMenu(this._newGame, this._saveGame, this._loadGame);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +28,7 @@ class SideMenu extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              newGame(Difficulty.Easy);
+              _newGame(Difficulty.Easy);
             },
           ),
           ListTile(
@@ -48,7 +40,7 @@ class SideMenu extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              newGame(Difficulty.Normal);
+              _newGame(Difficulty.Normal);
             },
           ),
           ListTile(
@@ -60,7 +52,7 @@ class SideMenu extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              newGame(Difficulty.Hard);
+              _newGame(Difficulty.Hard);
             },
           ),
           ListTile(
@@ -72,7 +64,7 @@ class SideMenu extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              saveGame();
+              _saveGame();
             },
           ),
           ListTile(
@@ -84,7 +76,7 @@ class SideMenu extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              loadGame();
+              _loadGame();
             },
           ),
         ],

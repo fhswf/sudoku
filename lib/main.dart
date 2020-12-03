@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sudoku/widgets/homepage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(SudokuApp());
 }
 
-class MyApp extends StatelessWidget {
+class SudokuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

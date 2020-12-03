@@ -10,15 +10,14 @@ import 'package:sudoku/services/sudoku_service.dart';
 import 'numberbuttons.dart';
 import 'package:sudoku/utility/SudokuPersister.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   final String title;
-
-  Tuple2<int, int> selectedBox = Tuple2(-1, -1);
-
-  SudokuService service = SudokuService();
+  final SudokuService _service = SudokuService();
+  Tuple2<int, int> _selectedBox = Tuple2(-1, -1);
 
   HomePage({Key key, this.title}) : super(key: key) {
-    service.generateNewGame(difficulty: Difficulty.Easy);
+    _service.generateNewGame(Difficulty.Easy);
   }
 
   @override
@@ -26,63 +25,62 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void setNumber(int value) {
-    if (widget.selectedBox.item1 != -1 && widget.selectedBox.item2 != -1)
+  void _setNumber(int value) {
+    if (widget._selectedBox.item1 != -1 && widget._selectedBox.item2 != -1)
       setState(() {
-        widget.service.acutalValues[widget.selectedBox.item1]
-            [widget.selectedBox.item2] = value;
+        widget._service.acutalValues[widget._selectedBox.item1]
+            [widget._selectedBox.item2] = value;
         if (SudokuArray.isSudokuEqual(
-            widget.service.acutalValues, widget.service.resolution)) {
-          resetSelected();
-          widget.service.acutalValues = null;
-          widget.service.resetGame();
+            widget._service.acutalValues, widget._service.resolution)) {
+          _resetSelected();
+          widget._service.resetGame();
           var dialogHelper = DialogHelper(context);
           dialogHelper.showWinDialog();
         }
       });
   }
 
-  void changeSelected(Tuple2 tuple) {
-    if (widget.service.acutalValues != null)
-      setState(() => widget.selectedBox = tuple);
+  void _changeSelected(Tuple2 tuple) {
+    if (widget._service.acutalValues != null)
+      setState(() => widget._selectedBox = tuple);
   }
 
-  void resetSelected() {
-    Tuple2<int, int> tuple = Tuple2(-1, -1);
-    changeSelected(tuple);
+  void _resetSelected() {
+    var tuple = Tuple2(-1, -1);
+    _changeSelected(tuple);
   }
 
-  void delete(Tuple2 tuple) {
+  void _deleteNumber(Tuple2 tuple) {
     setState(() {
-      widget.service.acutalValues[tuple.item1][tuple.item2] = 0;
-      widget.selectedBox = tuple;
+      widget._service.acutalValues[tuple.item1][tuple.item2] = 0;
+      widget._selectedBox = tuple;
     });
   }
 
-  void newGame(Difficulty difficulty) {
+  void _newGame(Difficulty difficulty) {
     setState(() {
-      resetSelected();
-      widget.service.generateNewGame(difficulty: difficulty);
+      _resetSelected();
+      widget._service.generateNewGame(difficulty);
     });
   }
 
-  void saveGame() async {
+  void _saveGame() async {
     var dialogHelper = DialogHelper(context);
     await dialogHelper.showSaveDialog(
-        SudokuPersister.saveSudoku, widget.service);
+        SudokuPersister.saveSudoku, widget._service);
   }
 
-  void loadGame() async {
+  void _loadGame() async {
     var dialogHelper = DialogHelper(context);
-    SudokuPersister.loadSudoku(widget.service, dialogHelper).then((value) => {
+    SudokuPersister.loadSudoku(widget._service, dialogHelper).then((value) => {
           setState(() {
-            resetSelected();
+            _resetSelected();
           })
         });
   }
 
-  void setHelp(bool value) {
-    setState(() => widget.service.helpOn = !value);
+  void _setHelp(bool value) {
+    setState(() => widget._service.helpOn = !value);
   }
 
   @override
@@ -91,12 +89,11 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          PopupMenu(widget.service, setHelp),
+          PopupMenu(widget._service, _setHelp),
         ],
       ),
       body: Container(
         decoration: BoxDecoration(
-          //color: Colors.blue[200],
           image: DecorationImage(
             image: AssetImage("images/background.jpg"),
             fit: BoxFit.cover,
@@ -104,35 +101,17 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Column(children: [
           Expanded(
-            child: Sudoku(
-                sudokuService: widget.service,
-                callback: this.changeSelected,
-                delete: this.delete,
-                selectedBox: widget.selectedBox),
+            child: Sudoku(widget._service, _changeSelected, _deleteNumber,
+                widget._selectedBox),
           ),
           NumberButtons(
-            this.setNumber,
+            _setNumber,
           ),
         ]),
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: SideMenu(widget.service, newGame, saveGame, loadGame),
+        child: SideMenu(_newGame, _saveGame, _loadGame),
       ),
     );
   }
-
-  void test(context) {
-    Scaffold.of(context).openDrawer();
-  }
-
-  /* @override
-  void initState() {
-    super.initState();
-    print('hello girl');
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => test(context));
-  }*/
 }
