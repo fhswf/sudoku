@@ -57,7 +57,8 @@ class SudokuService {
     }
   }
 
-  // A backtracking/recursive function to check all possible combinations of numbers until a solution is found
+  // A backtracking/recursive function to check all possible combinations
+  // of numbers until a solution is found
   bool _fillSudokuGrid(List<List<int>> sudokuGrid) {
     List<int> numberList = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     int row, col;
@@ -77,7 +78,8 @@ class SudokuService {
               List<int> square = SudokuArray.getSudokuSquareOfRowAndColumn(
                   sudokuGrid, row, col);
 
-              // Check that this value has not already be used on this 3x3 square
+              // Check that this value has not already be used
+              // on this 3x3 square
               if (!square.contains(value)) {
                 sudokuGrid[row][col] = value;
                 if (SudokuArray.checkSudokuGridFilled(sudokuGrid)) {
@@ -115,8 +117,8 @@ class SudokuService {
 
   void _removeNumbersFromSudoku(List<List<int>> sudokuGrid) {
     // Start Removing Numbers one by one
-    // A higher number of attempts will end up removing more numbers from the SudokuGrid
-    // Potentially resulting in more difficiult SudokuGrids to solve!
+    // A higher number of attempts will end up removing more numbers from the
+    // SudokuGrid Potentially resulting in more difficiult SudokuGrids to solve!
     int attempts = _difficultyInt;
     _counter = 1;
     while (attempts > 0) {
@@ -136,19 +138,23 @@ class SudokuService {
       List<List<int>> copysudokuGrid =
           SudokuArray.duplicateSudokuGrid(sudokuGrid);
 
-      // Count the number of solutions that this sudokuGrid has (using a backtracking approach implemented in the _solvesudokuGrid() function)
+      // Count the number of solutions that this sudokuGrid has (using a
+      // backtracking approach implemented in the _solvesudokuGrid() function)
       _counter = 0;
       _solvesudokuGrid(copysudokuGrid);
-      // If the number of solution is different from 1 then we need to cancel the change by putting the value we took away back in the SudokuGrid
+      // If the number of solution is different from 1 then we need to cancel the
+      // change by putting the value we took away back in the SudokuGrid
       if (_counter != 1) {
         sudokuGrid[row][col] = backup;
-        // We could stop here, but we can also have another attempt with a different cell just to try to remove more numbers
+        // We could stop here, but we can also have another attempt with a
+        // different cell just to try to remove more numbers
         attempts -= 1;
       }
     }
   }
 
-  // A backtracking/recursive function to check all possible combinations of numbers until a solution is found
+  // A backtracking/recursive function to check all possible combinations of
+  // numbers until a solution is found
   bool _solvesudokuGrid(List<List<int>> sudokuGrid) {
     int row, col;
 

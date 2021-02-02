@@ -51,11 +51,6 @@ class Box extends StatefulWidget {
 class _BoxState extends State<Box> {
   @override
   Widget build(BuildContext context) {
-    var marginLeft = 0.0;
-    var marginTop = 0.0;
-    var marginRight = 0.0;
-    var marginBottom = 0.0;
-
     return Expanded(
       child: InkWell(
         onTap: () {
@@ -65,11 +60,6 @@ class _BoxState extends State<Box> {
           if (!widget._isInitalValue) widget._deleteNumber(widget._position);
         },
         child: Container(
-          margin: EdgeInsets.only(
-              left: marginLeft,
-              top: marginTop,
-              right: marginRight,
-              bottom: marginBottom),
           decoration: BoxDecoration(
             color: widget._getBackgroundColorForBox(),
             border: Border(
