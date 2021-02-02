@@ -8,19 +8,21 @@ class SudokuPersister {
   static const String RESOLUTION = 'resolution';
   static const String ACTUALVALUES = 'actualValues';
 
-  static void saveSudoku(SudokuService sudokuService) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  static void saveSudoku(
+      SudokuService sudokuService, DialogHelper dialogHelper) async {
+    dialogHelper.showSaveDialog(() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (sudokuService.initialValues == null ||
+          sudokuService.resolution == null ||
+          sudokuService.acutalValues == null) return;
 
-    if (sudokuService.initialValues == null ||
-        sudokuService.resolution == null ||
-        sudokuService.acutalValues == null) return;
-
-    prefs.setStringList(INITIALVALUES,
-        SudokuArray.getSudokuAsStringList(sudokuService.initialValues));
-    prefs.setStringList(RESOLUTION,
-        SudokuArray.getSudokuAsStringList(sudokuService.resolution));
-    prefs.setStringList(ACTUALVALUES,
-        SudokuArray.getSudokuAsStringList(sudokuService.acutalValues));
+      prefs.setStringList(INITIALVALUES,
+          SudokuArray.getSudokuAsStringList(sudokuService.initialValues));
+      prefs.setStringList(RESOLUTION,
+          SudokuArray.getSudokuAsStringList(sudokuService.resolution));
+      prefs.setStringList(ACTUALVALUES,
+          SudokuArray.getSudokuAsStringList(sudokuService.acutalValues));
+    }, sudokuService);
   }
 
   static Future loadSudoku(

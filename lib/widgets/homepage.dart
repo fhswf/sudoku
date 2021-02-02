@@ -66,8 +66,7 @@ class _HomePageState extends State<HomePage> {
 
   void _saveGame() async {
     var dialogHelper = DialogHelper(context);
-    await dialogHelper.showSaveDialog(
-        SudokuPersister.saveSudoku, widget._service);
+    SudokuPersister.saveSudoku(widget._service, dialogHelper);
   }
 
   void _loadGame() async {

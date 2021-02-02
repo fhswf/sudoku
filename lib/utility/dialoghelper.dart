@@ -72,7 +72,7 @@ class DialogHelper {
               color: Colors.yellow[700],
               textColor: Colors.black,
               onPressed: () {
-                callback(service);
+                callback();
                 Navigator.of(context).pop();
               },
             ),
